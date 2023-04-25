@@ -1,0 +1,7 @@
+python3 -m venv tutorial-env
+source tutorial-env/bin/activate 
+python3 -m pip install spotipy --upgrade pip
+SPOTIPY_CLIENT_ID = "3e8627e438fa4781abf064e0d3bc7b6f"
+SPOTIPY_CLIENT_SECRET = "0ac3077f50b54e248fc32c64c8fc9e13"
+SPOTIPY_REDIRECT_URI = "https://localhost:3000"
+
