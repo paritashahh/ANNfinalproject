@@ -32,9 +32,6 @@ random_numbers = random.sample(range(1, 1000), 10)
 print(random_numbers)
 # [138!!, 583!!, 868!!, 822!!, 783!!, 65!!, 262!!, 121!!, 508!!, 780!!]
 
-with open('mpd.slice.0-999.json') as f:
-    data = json.load(f)
-
 def clean_text(text):
     text = clean(text, no_line_breaks=True, no_urls=True, no_punct=True, no_digits=True, replace_with_punct="", replace_with_digit="")
     text = emoji.replace_emoji(text, replace='')
@@ -48,18 +45,20 @@ def clean_text(text):
         return ""
     return text
 
-# create a dictionary, where each key is a song name and the value is a list of all playlists the song appears in 
 song_dict = {}
-for playlist in data['playlists']:
-    playlist_name = clean_text(playlist['name'])
-    # print(playlist_name)
-    for track in playlist['tracks']:
-        track_uri = track['track_uri'][14:]
-        if len(playlist_name) > 0:
-            if track_uri not in song_dict:
-                song_dict[track_uri] = [playlist_name]
-            else:
-                song_dict[track_uri].append(playlist_name)
+# compile all playlists and songs from the 10 random data slices into a single dictionary
+for i in range(1, 11):
+    with open('slice' + str(i) + '.json') as f:
+        data = json.load(f)
+        for playlist in data['playlists']:
+            playlist_name = clean_text(playlist['name'])
+            for track in playlist['tracks']:
+                track_uri = track['track_uri'][14:]
+                if len(playlist_name) > 0:
+                    if track_uri not in song_dict:
+                        song_dict[track_uri] = [playlist_name]
+                    else:
+                        song_dict[track_uri].append(playlist_name)
 
 # print(song_dict)
 
@@ -71,7 +70,7 @@ print(df)
 
 # for each song, get the audio features from spotify
 
-for song in song_dict:
-    print(song)
-    print(spotify.audio_features(song))
+# for song in song_dict:
+#     print(song)
+#     print(spotify.audio_features(song))
 
